@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #f2ecdf;
+  --ink: #1c1c22;
+  --cinnabar: #9d2b20;
+}
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+}
