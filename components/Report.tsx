@@ -2,13 +2,29 @@
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import QimenChart from "./QimenChart";
+import type { QimenChart as QimenChartType } from "@/lib/qimen/chart";
+
+function getQimenCurrent(c: unknown): QimenChartType | null {
+  if (!c || typeof c !== "object") return null;
+  const obj = c as any;
+  if (obj.current && typeof obj.current === "object" && "dun_type" in obj.current) {
+    return obj.current as QimenChartType;
+  }
+  if ("dun_type" in obj && "palaces" in obj) {
+    return obj as QimenChartType;
+  }
+  return null;
+}
 
 export default function Report({
+  skill,
   chart,
   report,
   done,
   loading,
 }: {
+  skill?: "ziwei" | "bazi" | "qimen";
   chart: unknown | null;
   report: string;
   done: boolean;
@@ -18,6 +34,11 @@ export default function Report({
 
   return (
     <div className="space-y-6">
+      {skill === "qimen" && (() => {
+        const cur = getQimenCurrent(chart);
+        return cur ? <QimenChart chart={cur} /> : null;
+      })()}
+
       {chart ? (
         <details className="bg-ink-50 border border-ink-100 rounded p-4">
           <summary className="cursor-pointer text-sm text-ink-500 hover:text-ink-700">

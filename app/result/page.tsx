@@ -190,7 +190,7 @@ function ResultForm() {
         </div>
       )}
 
-      <Report chart={chart} report={report} done={done} loading={loading} />
+      <Report skill={skill} chart={chart} report={report} done={done} loading={loading} />
     </>
   );
 }

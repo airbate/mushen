@@ -91,11 +91,22 @@ export async function POST(req: NextRequest) {
       });
       messages = buildBaziMessages(chart, body.questionGoal);
     } else {
-      chart = buildQimenChart({
+      // 奇门：当前盘 + 未来 3 个流年盘（每年同月同日同时）
+      const [y, m, d] = body.solarDate.split("-").map(Number);
+      const baseChart = buildQimenChart({
         solarDate: body.solarDate,
         hour: body.hour,
         minute: body.minute,
       });
+      const yearCharts = [1, 2, 3].map((offset) => ({
+        label: `${y + offset}年流年盘`,
+        chart: buildQimenChart({
+          solarDate: `${y + offset}-${m}-${d}`,
+          hour: body.hour,
+          minute: body.minute,
+        }),
+      }));
+      chart = { current: baseChart, yearCharts };
       messages = buildQimenMessages(chart, body.questionGoal);
     }
 
